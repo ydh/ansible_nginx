@@ -1,0 +1,59 @@
+---
+- name: set hostname for project
+  command: hostnamectl set-hostname {{ project_name }}
+  tags: common
+
+- name: install epel-release first
+  yum: name=epel-release state=present
+  tags: common
+
+- name: install utility
+  yum: state=present name={{ item }}
+  with_items:
+  - net-tools
+  - mc
+  - wget
+  - telnet
+  - rsync
+  - vim
+  - screen
+  - git
+  - gmp
+  - gmp-devel
+  - python-pip
+  - libselinux-python
+  - bind-utils
+  - htop
+  - zip
+  - unzip
+  - lsof
+  - npm
+  tags: common
+
+- name: create group 
+  group: name={{ group }} state=present
+  tags: common
+
+- name: create user 
+  user: name={{ user }} group={{ group }} append=yes
+  tags: common
+
+- name: create directory project berkas
+  file: path=/var/www/{{ project_name }} recurse=yes state=directory owner={{ user }} group={{ group }}
+  tags: common
+
+- name: chown project directory to project user
+  file: path=/var/www/{{ project_name }} state=directory recurse=yes owner=berkas group=berkas
+  tags: common
+
+- name: restart firewalld
+  command: systemctl restart firewalld
+  tags: common
+
+- name: allow port 80
+  firewalld: port=80/tcp permanent=true state=enabled
+  tags: common
+
+- name: reload firewalld
+  command: firewall-cmd --reload
+  tags: common   

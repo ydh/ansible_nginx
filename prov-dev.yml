@@ -1,0 +1,14 @@
+---
+- name: ansible playbook for berkas.beritagar.id project
+  hosts: dev_vm
+  sudo: True
+
+  vars_files:
+   - group_vars/all
+
+  roles:
+    - common
+    - users
+    - nginx
+    - php
+ 

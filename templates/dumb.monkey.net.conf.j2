@@ -1,0 +1,31 @@
+server {
+	server_name  {{ project_name }};
+	listen 80;
+
+	access_log 	/var/log/nginx/{{ project_name }}.id-access.log;
+	error_log 	/var/log/nginx/{{ project_name }}.id-error.log;
+	root /var/www/{{ project_name }}/public;
+	try_files $uri $uri/ /index.php
+
+        index index.php index.js ;
+
+
+	location ~* \.php$ {
+		fastcgi_pass unix:/var/run/{{ project_name }}.sock;
+		fastcgi_index index.php;
+		include fastcgi_params;
+
+		fastcgi_intercept_errors 	on;
+		fastcgi_ignore_client_abort 	off;
+		fastcgi_connect_timeout 1200;
+		fastcgi_send_timeout 2400;
+		fastcgi_buffers 4 256k;
+		fastcgi_busy_buffers_size 256k;
+		fastcgi_temp_file_write_size 256k;
+		fastcgi_cache_valid 200 302 1h;
+		fastcgi_cache_valid 301 1d;
+		fastcgi_cache_valid any 1m;
+		fastcgi_cache_min_uses 1;
+		fastcgi_cache_use_stale error timeout invalid_header http_500;
+	}
+}

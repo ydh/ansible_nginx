@@ -1,0 +1,28 @@
+---
+- name: create group sysadmin
+  group: name=sysadmin state=present
+  tags: user
+
+- name: create group developer
+  group: name=developer state=present
+  tags: user
+
+- name: create group dba
+  group: name=dba  state=present
+  tags: user
+
+- name: create user
+  user: >
+    name={{ item.key }}
+    group={{ item.value.group }}
+    generate_ssh_key=yes
+    ssh_key_bits=2048
+    ssh_key_file=.ssh/id_rsa
+    append=yes
+  with_dict: ssh_users
+  tags: user
+
+- name: add ssh public key
+  authorized_key: user={{ item.key }} key="{{ lookup('file', item.value.kunci ) }}"
+  with_dict: ssh_users
+  tags: user

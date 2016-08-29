@@ -1,0 +1,47 @@
+---
+- name: add repo php56 from webtatic
+  yum: name=https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+  tags: php
+
+- name: install php package
+  yum: state=present name={{ item }}
+  with_items:
+  - php56w-mcrypt
+  - php56w-mysql
+  - php56w-cli
+  - php56w-common
+  - php56w-fpm
+  - php56w-xml
+  - php56w-gd
+  - php56w-pdo
+  - php56w-pear
+  - php56w
+  - php56w-process
+  - php56w-mbstring
+  - php56w-pecl-redis
+  - libmcrypt
+  - php56w-bcmath
+  tags: php
+
+
+- name: stat php-fpm www.conf
+  stat: path=/etc/php-fpm.d/www.conf
+  register: stat_php_fpm
+  tags: php
+
+- name: remove default php-fpm settings
+  command: rm /etc/php-fpm.d/www.conf
+  when: stat_php_fpm.stat.exists
+  tags: php
+
+- name: move php-fpm setting for berkas project
+  template: src=../../../templates/{{ project_name }}-fpm.conf.j2 dest=/etc/php-fpm.d/{{ project_name }}.conf
+  tags: php
+
+- name: restart php-fpm
+  command: systemctl restart php-fpm
+  tags: php
+
+- name: enable php-fpm service
+  command: systemctl enable php-fpm
+  tags: php

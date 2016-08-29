@@ -1,0 +1,7 @@
+---
+php_fpm_dir: /etc/php-fpm.d
+nginx_dir: /etc/nginx
+project_name: dumb.monkey.net
+user: monkey
+group: cage13
+
