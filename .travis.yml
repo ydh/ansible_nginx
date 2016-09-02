@@ -1,0 +1,3 @@
+script:
+ #check ansible role/playbook
+  - ansible-playbook -i hosts/inventory test.yml --syntax-check
