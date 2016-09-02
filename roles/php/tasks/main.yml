@@ -35,7 +35,7 @@
   tags: php
 
 - name: move php-fpm setting for berkas project
-  template: src=../../../templates/{{ project_name }}-fpm.conf.j2 dest=/etc/php-fpm.d/{{ project_name }}.conf
+  template: src=../../../templates/{{ project_name }}-fpm.conf.j2 dest=/etc/php-fpm.d/{{ project_name }}-fpm.conf
   tags: php
 
 - name: restart php-fpm

@@ -38,12 +38,12 @@
   user: name={{ user }} group={{ group }} append=yes
   tags: common
 
-- name: create directory project berkas
+- name: create directory project 
   file: path=/var/www/{{ project_name }} recurse=yes state=directory owner={{ user }} group={{ group }}
   tags: common
 
 - name: chown project directory to project user
-  file: path=/var/www/{{ project_name }} state=directory recurse=yes owner=berkas group=berkas
+  file: path=/var/www/{{ project_name }} state=directory recurse=yes owner={{ user }}  group={{ group }}
   tags: common
 
 - name: restart firewalld
