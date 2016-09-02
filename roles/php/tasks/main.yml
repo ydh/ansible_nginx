@@ -24,6 +24,19 @@
   tags: php
 
 
+- name: stat file info.php
+  stat: path=/var/www/{{ project_name }}/info.php
+  register: stat_php_info
+  tags: php
+
+- name: move file info.php
+  template: src=../../../templates/info.php.j2 
+    dest=/var/www/{{ project_name }}/info.php
+    owner={{ user }}
+    group={{ group }}
+    mode=0755
+  tags: php
+
 - name: stat php-fpm www.conf
   stat: path=/etc/php-fpm.d/www.conf
   register: stat_php_fpm

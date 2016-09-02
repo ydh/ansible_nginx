@@ -56,4 +56,8 @@
 
 - name: reload firewalld
   command: firewall-cmd --reload
-  tags: common   
+  tags: common  
+
+- name: add hostname
+  lineinfile: dest=/etc/hosts line="{{ ansible_default_ipv4.address }} {{ ansible_nodename }}"
+  tags: common

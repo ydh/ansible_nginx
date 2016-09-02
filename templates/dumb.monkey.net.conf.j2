@@ -4,14 +4,14 @@ server {
 
 	access_log 	/var/log/nginx/{{ project_name }}.id-access.log;
 	error_log 	/var/log/nginx/{{ project_name }}.id-error.log;
-	root /var/www/{{ project_name }}/public;
+	root /var/www/{{ project_name }};
 	try_files $uri $uri/ /index.php
 
         index index.php index.js ;
 
 
 	location ~* \.php$ {
-		fastcgi_pass unix:/var/run/{{ project_name }}.sock;
+		fastcgi_pass unix:/var/run/{{ project_name }}-fpm.sock;
 		fastcgi_index index.php;
 		include fastcgi_params;
 
