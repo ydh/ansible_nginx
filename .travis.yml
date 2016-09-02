@@ -1,3 +1,27 @@
+sudo: required
+env:
+  - CONTAINER_ID=$(mktemp)
+
+services:
+  - docker
+
+before_install:
+  - sudo apt-get update
+  - sudo docker pull centos:7
+
+# Customize containers
+  - sudo docker build --rm=true --file=Dockerfile --tag=centos:ansible .
+
 script:
+
+  - sudo docker run --detach --privileged --volume/sys/fs/cgroup:/sys/fs/cgroup:ro centos:ansible /usr/lib/system/systemd > "$(CONTAINER_ID)"
+  - sudo docker exec "$(cat $(CONTAINER_ID})" ansible-playbook /etc/ansible/test.yml --syntax-check
+  - sudo docker exec "$(cat $(CONTAINER_ID})" ansible-playbook /etc/ansible/test.yml
+
+  - sudo docker stop "$(cat $(CONTAINER_ID})"
+
+notification: 
+  email: false
+
  #check ansible role/playbook
-  - ansible-playbook -i hosts/inventory test.yml --syntax-check
+#  - ansible-playbook -i hosts/inventory test.yml --syntax-check
