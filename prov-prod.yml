@@ -1,6 +1,6 @@
 ---
-- name: ansible playbook for berkas.beritagar.id project
-  hosts: berkas_vm
+- name: ansible playbook for ansible nginx  project
+  hosts: nginx_prod
   sudo: True
 
   vars_files:
@@ -8,7 +8,6 @@
 
   roles:
     - common
-    - users
     - nginx
     - php
  

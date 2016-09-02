@@ -1,6 +1,6 @@
 ---
-- name: ansible playbook for nginx ansible  project
-  hosts: dev_vm
+- name: ansible playbook for nginx ansible project
+  hosts: localhost
   sudo: True
 
   vars_files:
